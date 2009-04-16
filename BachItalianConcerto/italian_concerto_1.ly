@@ -4,7 +4,7 @@
 	title = "Italian concerto"
 	subtitle = "First movement"
 	composer = "Johann Sebastian Bach"
-	arranger = "Typeset by Boris Dušek"
+	arranger = "Edited by Ebenezer Prout"
 	copyright = "Public domain"
 	meter = "Allegro"
 
@@ -20,11 +20,16 @@
 	style = "Baroque"
 	copyright = "Public Domain"
 	maintainer = "Boris Dušek"
-	maintainerEmail = "dusekmgr@cmail.cz"
+	maintainerEmail = "boris.dusek@gmail.com"
 	lastupdated = "2007/January/21"
 
 	%%%%%%%%%%%%%%%%%%%%%
 }
+
+tf = \markup { \italic forte }
+tp = \markup { \italic piano }
+tl = \markup { \italic legato} 
+
 
 
 %#(ly:set-option 'point-and-click #f)
@@ -38,11 +43,12 @@ right = \relative c'' { %%%%%
   #(override-auto-beam-setting '(end 1 8 2 4) 2 4 'Score)
   #(override-auto-beam-setting '(end 1 16 2 4) 1 4 'Score)
   #(override-auto-beam-setting '(end 1 32 2 4) 1 4 'Score)
+  \override Score.MetronomeMark #'padding = #7
   \tempo 4=96
   \time 2/4
   \key f \major
   \clef violin
-  \override PianoStaff.Fingering #'avoid-slur = #'inside
+  \override PianoStaff.Fingering #'avoid-slur = #'outside
 
   %1
   <<
@@ -94,14 +100,14 @@ right = \relative c'' { %%%%%
   bes8-. g'~g16 bes,16-2( a-1 g-2 |
   %10
   a-3 g f g a bes c-1 d) |
-  es8 c'~c16 es,-2 d-1 c-3 |
-  d c bes c-1 d e f-1 g |
+  es8 c'~c16 es,-2_\markup { \italic "legato" } d-1 c-3 |
+  d c bes c-1 d e! f-1 g |
   as16[ g32 f g8]~g16[ f32-1 e-2 f8-3]~ |
   f16[ e32 d e8]~e16 g-5 e-4 c-2 |
   %15
-  bes-. g'( e c) bes-. g'( e c) |
+  bes-.-1 g'( e c) bes-. g'( e c) |
   bes-. g'( e c) bes-. g'( e bes) |
-  a-. a'( f des-4) c-. a'( f des) |
+  a-. a'( f-4 des) c-. a'( f des) |
   c-. a'( f des) c-. a'( f-3 es) |
   d-. b'-5( as-3 f) d-. b'( as f) |
   %20
@@ -111,7 +117,7 @@ right = \relative c'' { %%%%%
   bes d bes g-2 e-1 g f a |
   g-3 bes-5 g e c-1 bes'-4 a g |
   %25
-  a f g a bes c-1 d e | 
+  a f g a bes c-1 d e |
   f e d c
   <<
 	{
@@ -134,16 +140,16 @@ right = \relative c'' { %%%%%
 	  \voiceFour
 	  s4 |
 	  s2 |
-	  c8 b~b16 d c bes |
+	  c8 b-2~b16 d-4 c bes |
 	  a8. a16-2 g4 |
 	  %30
 	  f
-	}
-  >> r8 c'-1\f |
-  d16 c d8~d16 f es d |
-  c e-3 f8~f16 e d c |
+	} 
+  >> r8 c'-1^\tf |
+  d16_\tl c d8~d16 f es d |
+  c e!-3 f8~f16 e d c |
   bes-2 a bes d g8 bes, |
-  bes\prall a r a
+  \grace{bes16([ c]} bes8^\markup{({\musicglyph #"scripts.prall"})}) a r a-3
   %35
   g16-2( bes-4) bes-3( a) a-1( f'-5) f-4( e) |
   e-4( d) d( c) c( bes) bes-4( a) |
@@ -153,17 +159,18 @@ right = \relative c'' { %%%%%
   %40
   g b) c8~c16 b( a g |
   f e f a d8 f,) |
-  f[\prall e] r16 c'-3( d e |
+  \grace{f16([ g]} f8)[\prall e] r16 c'-3( d e |
   a,-2) e-1( f-2 a-3 d-5) d-3( e f |
-  b,-2) fis-1( g b e-5) e-3( f g |
+  %TODO maybe a bug in LilyPond - without f!, no accidental gets printed
+  b,-2) fis-1( g b e-5) e-3( f! g |
   %45
-  c,) gis-1( a c fis-5) fis-2( g a) |
-  g\prall fis g8-5~ g16 g,( b d |
-  f e f8)~ f16 g,(  b d |
+  c,) gis-1( a c fis-5) fis-2( g! a) |
+  \grace{g16[( fis]} g16)\prall fis g8-5~ g16 g,( b d |
+  f! e f8)~ f16 g,(  b d |
   e d e8)~ e16 g,-1 c-2 d |
   es-. c( b c) fis c a' c,-1 |
   %50
-  b-3 f-1 e-2 f-1 b f d' f, |
+  b-3 f!-1 e-2 f-1 b f d' f, |
   e-2 g-1 c g' f e d c |
   c4 r4 |
   <<
@@ -540,18 +547,17 @@ left = \relative c {
   >>
   r4 |
   <<
-	<e' g c>4 \\
-	c4
+	{<e' g c>4 r}\\
+	{c4 r}
   >>
   %5
-  r4 \clef treble |
+  \clef treble |
   r8 c''( a f) \clef bass |
   r8 c( a f) |
   <<
-	c'4 \\
-	{ c8[ c,] }
-  >>
-  r4 |
+	{c'4 r}\\
+	{ c8[ c,] r4}
+  >> |
   <<
 	{
 	  <g' c>4 <e g c>~ |
@@ -567,7 +573,7 @@ left = \relative c {
   <<
 	{
 	  <c' f>4 <a c f>~ |
-	  f'8 d-3 f bes |
+	  f'8 d_3 f bes |
 	  <f b>4 <d g> |
 	  \clef bass
 	  <b d> <g c> 
@@ -589,8 +595,8 @@ left = \relative c {
   f8-.) d-. g,-. b-. |
   c c,16( d e8) g-. |
   c-. c,16( d e8-.) f-. |
-  g-. c,16-5( e-4 g8-._2) a-. |
-  bes-._2 c,16-5( d e8-) c-. |
+  g-. c,16_5( e_4 g8-._2) a-. |
+  bes-._2 c,16_5( d e8-) c-. |
   %25
   f16-2( a-1 g f e d c bes |
   a c d e f g a bes |
@@ -601,13 +607,13 @@ left = \relative c {
   f, \clef treble
   <<
 	{
-	  a'' a a |
-	  bes bes bes bes |
+	  a''^\tp-3 a a |
+	  bes-2 bes bes bes |
 	  bes bes a a |
 	  g g g g |
-	  g f r f |
+	  g f b\rest f |
 	  %35
-	  f e f a |
+	  f-1 e-3 f a |
 	  g f e f |
 	  f e f a |
 	  g f e g |
@@ -617,13 +623,13 @@ left = \relative c {
 	  d d d d 
 	} \\
 	{
-	  f f f |
-	  f f f f |
+	  f-3 f f |
+	  f-4 f f f |
 	  f f f f |
 	  f f e e |
 	  f f,16 g a8 f |
 	  %35
-	  c' c c c |
+	  c'-4 c-5 c c |
 	  c c c c |
 	  c c c c |
 	  c c c c |
@@ -636,12 +642,12 @@ left = \relative c {
   <<
 	{
 	  d8 c r4 |
-	  r16 g-4 a c f8 r8 |
+	  r16 g_4 a c f8 r8 |
 	  r16 a,-4 b d g8 r8 |
 	  %45
 	  r16 b,-4 c e a8 c,8 |
-	  d b d f |
-	  d b d f |
+	  d-1 b-3 d-2 f-1 |
+	  d-2 b-3 d f |
 	  g16 f e d-4 c8 s8 |
 	  s2 |
 	  %50
@@ -661,10 +667,10 @@ left = \relative c {
 	} \\
 	{
 	  c'8 c,16( d e8) c |
-	  f4-5 r8 d |
-	  g s r e |
+	  f4-5 d8\rest d |
+	  g s d\rest e |
 	  %45
-	  a4 r8 a-4 |
+	  a4 d,8\rest a'-4 |
 	  b-3 g-5 b-4 d-3 |
 	  b-4 g-5 b d |
 	  c4-5~ c16-1 b a g-1 |
@@ -933,7 +939,7 @@ left = \relative c {
   %190
   d r8 e |
   f a, bes c |
-  f,2\fermata \bar "|."
+  f,2_\fermata \bar "|."
 
 } % lower (Staff)
 
